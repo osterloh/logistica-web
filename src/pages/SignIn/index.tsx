@@ -3,6 +3,7 @@ import { FiLogIn, FiMail, FiLock } from "react-icons/fi";
 import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
 import * as Yup from "yup";
+import { Link, useHistory } from "react-router-dom";
 
 import { useAuth } from "../../hooks/auth";
 import { useToast } from "../../hooks/toast";
@@ -23,6 +24,7 @@ const SignIn: React.FC = () => {
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   const handleSubmit = useCallback(
     async (data: SingInFormData) => {
@@ -40,13 +42,20 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        signIn({
+        await signIn({
           email: data.email,
           senha: data.senha,
         });
+
+        history.push('/dashboard');
+
       } catch (err) {
-        const errors = getValidationErrors(err);
-        formRef.current?.setErrors(errors);
+        if(err instanceof Yup.ValidationError){
+          const errors = getValidationErrors(err);
+          formRef.current?.setErrors(errors);
+
+          return
+        }
 
         addToast({
           type: "error",
@@ -55,7 +64,7 @@ const SignIn: React.FC = () => {
         });
       }
     },
-    [signIn, addToast]
+    [signIn, addToast, history]
   );
 
   return (
@@ -77,10 +86,10 @@ const SignIn: React.FC = () => {
           <a href="teste">Esqueci minha senha</a>
         </Form>
 
-        <a href="teste">
+        <Link to="/signup">
           <FiLogIn />
           Criar conta
-        </a>
+        </Link>
       </Content>
       <Background />
     </Container>
