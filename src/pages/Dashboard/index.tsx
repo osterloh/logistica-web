@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import api from "../../service/api";
 
@@ -29,6 +30,10 @@ const Dashboard: React.FC = () => {
             <p>{pessoa.telefone}</p>
           </div>
         ))}
+        
+        <Link to="/cadastro">
+          Cadastro
+        </Link>
       </Container>
     </>
   );

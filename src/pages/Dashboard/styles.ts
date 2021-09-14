@@ -10,4 +10,9 @@ export const Container = styled.div`
       color: #dee3e0;
     }
   }
+
+  a {
+    color: #f7f5f5;
+    font-size: 30px;
+  }
 `;
