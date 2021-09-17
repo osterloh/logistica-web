@@ -14,7 +14,11 @@ const Dashboard: React.FC = () => {
   const [pessoas, setPessoa] = useState<Pessoa[]>([]);
 
   useEffect(() => {
-    api.get("/pessoas").then((response) => {
+    const token = localStorage.getItem("@Logistica:token");
+    let config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+    api.get("/pessoas", config).then((response) => {
       setPessoa(response.data);
     });
   }, []);
@@ -30,10 +34,8 @@ const Dashboard: React.FC = () => {
             <p>{pessoa.telefone}</p>
           </div>
         ))}
-        
-        <Link to="/cadastro">
-          Cadastro
-        </Link>
+
+        <Link to="/cadastro">Cadastro</Link>
       </Container>
     </>
   );
